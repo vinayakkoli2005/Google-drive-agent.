@@ -31,7 +31,13 @@ st.markdown("""
 st.title("📂 Drive Discovery Agent")
 st.markdown("Ask me to find, filter, or discover files in your designated Google Drive folder!")
 
-API_URL = os.getenv("BACKEND_URL", "http://127.0.0.1:8000") + "/chat"
+# Streamlit Cloud uses st.secrets; fallback to env var for local/other platforms
+try:
+    _backend = st.secrets["BACKEND_URL"]
+except Exception:
+    _backend = os.getenv("BACKEND_URL", "http://127.0.0.1:8000")
+
+API_URL = _backend.rstrip("/") + "/chat"
 
 if "session_id" not in st.session_state:
     st.session_state.session_id = str(uuid.uuid4())
