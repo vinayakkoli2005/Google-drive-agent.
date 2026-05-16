@@ -11,15 +11,23 @@ SHARED_FOLDER_ID = os.getenv("GOOGLE_DRIVE_FOLDER_ID", "1qkx58doSeYrcLjHPDysJyVJ
 
 def get_drive_service():
     """Authenticate and return the Google Drive API service."""
-    service_account_file = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "service_account.json")
-
-    if not os.path.exists(service_account_file):
-        logger.warning(f"Service account file '{service_account_file}' not found.")
-        return None
-
     try:
-        creds = service_account.Credentials.from_service_account_file(
-            service_account_file, scopes=SCOPES)
+        # Prefer JSON string from env var (for Railway/cloud deployments)
+        sa_json = os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
+        if sa_json:
+            import json
+            sa_info = json.loads(sa_json)
+            creds = service_account.Credentials.from_service_account_info(
+                sa_info, scopes=SCOPES)
+        else:
+            # Fall back to file on disk (for local development)
+            sa_file = os.getenv("GOOGLE_APPLICATION_CREDENTIALS", "service_account.json")
+            if not os.path.exists(sa_file):
+                logger.warning(f"Service account file '{sa_file}' not found.")
+                return None
+            creds = service_account.Credentials.from_service_account_file(
+                sa_file, scopes=SCOPES)
+
         return build('drive', 'v3', credentials=creds)
     except Exception as e:
         logger.error(f"Error building Drive service: {e}")
