@@ -1,0 +1,15 @@
+.env
+service_account.json
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.env.local
+
+# Claude / AI assistant artifacts
+.claude/
+CLAUDE.md
+*.claude
+memory/
+docs/superpowers/
+.planning/

@@ -1,0 +1,39 @@
+Your Mission ■
+Build a conversational AI agent that can assist users in searching, filtering, and discovering files
+within a designated Google Drive. The agent should be capable of engaging in a natural,
+back-and-forth conversation with the user, understanding their search intent, executing accurate
+queries to find specific files (by name, type, content, or date), and presenting the results
+seamlessly through chat.
+Technical Stack Requirements ■
+   Backend: Python with FastAPI
+   Agent Framework: LangGraph or LangChain
+   Frontend: Build the chat interface using Streamlit
+   LLM/Chat Model: Use any LLM API like Gemini, Groq, OpenAI, etc., to power the natural
+language understanding.
+Google Drive Integration Instructions
+   Use a Service Account for integrating with the Google Drive API.
+   Setup: A sample Google Drive folder has been provided with a mix of file types (PDFs,
+Docs, Sheets, images) for you to use as the test repository. Make a copy of this folder into
+your own Google Drive, then share it with your Service Account's email address. The agent
+will search within this folder.
+   Discoverability Focus: Your implementation must utilize the files.list method and
+heavily leverage the Drive API's q (query) parameter to ensure highly accurate search results.
+The agent should understand how to search by exact name, partial name (contains), file
+type (mimeType), and text within the document (fullText).
+■ Sample Folder (copy this to your Drive):
+https://drive.google.com/drive/folders/1qkx58doSeYrcLjHPDysJyVJ36PsSqqlt
+Your Final Submission
+
+   Host both the backend and frontend using a platform like Railway, Render, Fly.io, etc.
+   Your final submission must include a working Streamlit URL, where I will test the file
+discovery functionality live.
+   Include the GitHub code link.
+   Ensure the bot is fully functional, conversational, and accurately retrieves files based on
+complex user requests.
+Hint: Use the function calling / tool calling feature in LangChain to create a dedicated
+DriveSearchTool. The LLM should be prompted to translate the user's natural language
+request (e.g., "Find the financial report from last week") into a properly formatted Google Drive q
+parameter string (e.g., name contains 'financial' and modifiedTime >
+'2023-10-24T12:00:00') to pass into your tool!
+*** Let me know if you'd like to adjust the difficulty or add any requirements regarding returning
+download links or file previews!

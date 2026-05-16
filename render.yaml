@@ -1,0 +1,27 @@
+services:
+  # FastAPI Backend
+  - type: web
+    name: tailortalk-backend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: GOOGLE_APPLICATION_CREDENTIALS
+        value: service_account.json
+      - key: GOOGLE_DRIVE_FOLDER_ID
+        sync: false
+
+  # Streamlit Frontend
+  - type: web
+    name: tailortalk-frontend
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run frontend/app.py --server.port $PORT --server.address 0.0.0.0
+    envVars:
+      - key: BACKEND_URL
+        fromService:
+          name: tailortalk-backend
+          type: web
+          property: host
